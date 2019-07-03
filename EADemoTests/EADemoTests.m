@@ -40,11 +40,6 @@
     NSString *test = [[NSString alloc] initWithData:ecodedata encoding:NSUTF8StringEncoding];
 }
 
-
-
-
-
-
 - (void)testPerformanceExample {
     // This is an example of a performance test case.
     [self measureBlock:^{
@@ -52,6 +47,7 @@
     }];
 }
 
+#pragma experiment methods
 - (NSData *)createData:(NSString *)input {
     const char *buf = [input UTF8String];
     NSMutableData *data = [NSMutableData data];
@@ -78,6 +74,21 @@
         }
     }
     return data;
+}
+
+//i is the length of cmd
+- (Byte)CalcCheckSum:(Byte)i data:(NSMutableData *)cmd
+{   Byte * cmdByte = (Byte *)malloc(i);
+    memcpy(cmdByte, [cmd bytes], i);
+    Byte local_cs = 0;
+    int j = 0;
+    while (i>0) {
+        local_cs += cmdByte[j];
+        i--;
+        j++;
+    };
+    local_cs = local_cs & 0xff;
+    return local_cs;
 }
 
 @end
